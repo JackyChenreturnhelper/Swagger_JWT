@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swagger_JWT.Common.Helper;
+using Swagger_JWT.Service.Interface;
 
 namespace Swagger_JWT.Controllers
 {
@@ -17,12 +18,16 @@ namespace Swagger_JWT.Controllers
     public class LoginController : ControllerBase
     {
         private readonly JwtHelper _jwt;
-        public LoginController(JwtHelper jwt)
+
+        private readonly ILoginService _loginService;
+        public LoginController(JwtHelper jwt, ILoginService loginService)
         {
             this._jwt = jwt;
+            this._loginService = loginService;
         }
 
         [HttpGet]
+        [Route("GetJwtStr")]
         public async Task<object> GetJwtStr(string name, string pass)
         {
             string jwtStr = string.Empty;
@@ -47,6 +52,15 @@ namespace Swagger_JWT.Controllers
                 success = suc,
                 token = jwtStr
             });
+        }
+
+        [HttpGet]
+        [Route("test")]
+        public async Task<string> test(string para)
+        {
+
+            return await _loginService.Station(para);
+
         }
     }
 }

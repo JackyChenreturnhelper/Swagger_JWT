@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,11 @@ namespace Swagger_JWT
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<JwtHelper>();
+
+            services.AddSingleton(new Appsettings(Configuration));
+
+            services.AddCacheSetup();
+
             services.AddAuthorizationSetup(Configuration);
 
             services.AddSwaggerSetup();
@@ -46,6 +52,11 @@ namespace Swagger_JWT
 
            
          
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new AutofacModuleRegister());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagger_JWT", "Swagger_JWT\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagger_JWT.Common", "Swagger_JWT.Common\Swagger_JWT.Common.csproj", "{F13BBB02-0ACB-4FDE-883F-CAE6D3035EDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Swagger_JWT.Service", "Swagger_JWT.Service\Swagger_JWT.Service.csproj", "{1E283E00-2187-4D5C-970B-9B1F24830326}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F13BBB02-0ACB-4FDE-883F-CAE6D3035EDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F13BBB02-0ACB-4FDE-883F-CAE6D3035EDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F13BBB02-0ACB-4FDE-883F-CAE6D3035EDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E283E00-2187-4D5C-970B-9B1F24830326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E283E00-2187-4D5C-970B-9B1F24830326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E283E00-2187-4D5C-970B-9B1F24830326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E283E00-2187-4D5C-970B-9B1F24830326}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
