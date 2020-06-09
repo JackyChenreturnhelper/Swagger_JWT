@@ -66,6 +66,10 @@ namespace Swagger_JWT
 
             services.AddCorsSetup();
 
+            services.AddHttpContextSetup();
+
+            services.AddIpPolicyRateLimitSetup(Configuration);
+
 
 
             services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)

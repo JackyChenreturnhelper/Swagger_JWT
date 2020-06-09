@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swagger_JWT.Common.Helper;
+using Swagger_JWT.Common.HttpContextUser;
 using Swagger_JWT.Service.Dto;
 using Swagger_JWT.Service.Interface;
 using Swagger_JWT.ViewModel;
@@ -24,11 +25,13 @@ namespace Swagger_JWT.Controllers
 
         private readonly ILoginService _loginService;
         private readonly IMapper _mapper;
-        public LoginController(JwtHelper jwt, ILoginService loginService, IMapper mapper)
+        private readonly IUser _user;
+        public LoginController(JwtHelper jwt, ILoginService loginService, IMapper mapper, IUser user)
         {
             this._jwt = jwt;
             this._loginService = loginService;
             this._mapper = mapper;
+            this._user = user;
         }
 
         [HttpGet]
@@ -76,6 +79,19 @@ namespace Swagger_JWT.Controllers
             var result = _mapper.Map<IEnumerable<ApiClaimsDto>, IEnumerable<ApiClaimsViewModel>>(data);
             return result;
 
+        }
+
+        [HttpGet]
+        [Route("UserInfo")]
+        public async Task<string> GetUserInfo(string ClaimType = "jti")
+        {
+            var getUserInfoByToken = _user.GetUserInfoFromToken(ClaimType);
+
+            var IsAuthenticated = _user.IsAuthenticated();
+            var Name = _user.Name;
+            var GetClaimValueByType = _user.GetClaimValueByType(ClaimType);
+
+            return Name;
         }
     }
 }
