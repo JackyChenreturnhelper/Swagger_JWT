@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +18,9 @@ using Microsoft.OpenApi.Models;
 using Swagger_JWT.Common.Helper;
 using Swagger_JWT.Infrastructure.Dependency;
 using Swagger_JWT.Infrastructure.Filter;
+using Swagger_JWT.Infrastructure.Mapper;
+using Swagger_JWT.Repository.DB;
+using Swagger_JWT.Service.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Swagger_JWT
@@ -30,14 +34,26 @@ namespace Swagger_JWT
 
         public IConfiguration Configuration { get; }
 
-       
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+     
+
             services.AddSingleton<JwtHelper>();
 
             services.AddSingleton(new Appsettings(Configuration));
+
+            services.AddSingleton(new MyDbContext());
+
+            services.AddAutoMapper
+          (
+              typeof(ServiceProfile).Assembly,
+              typeof(ControllerProfile).Assembly
+          );
+
 
             services.AddCacheSetup();
 

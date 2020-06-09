@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swagger_JWT.Common.Helper;
+using Swagger_JWT.Service.Dto;
 using Swagger_JWT.Service.Interface;
+using Swagger_JWT.ViewModel;
 
 namespace Swagger_JWT.Controllers
 {
@@ -20,10 +23,12 @@ namespace Swagger_JWT.Controllers
         private readonly JwtHelper _jwt;
 
         private readonly ILoginService _loginService;
-        public LoginController(JwtHelper jwt, ILoginService loginService)
+        private readonly IMapper _mapper;
+        public LoginController(JwtHelper jwt, ILoginService loginService, IMapper mapper)
         {
             this._jwt = jwt;
             this._loginService = loginService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
@@ -60,6 +65,16 @@ namespace Swagger_JWT.Controllers
         {
 
             return await _loginService.Station(para);
+
+        }
+
+        [HttpGet]
+        [Route("ApiClaims")]
+        public async Task<IEnumerable<ApiClaimsViewModel>> ApiClaims()
+        {
+            var data = await _loginService.ApiClaims();
+            var result = _mapper.Map<IEnumerable<ApiClaimsDto>, IEnumerable<ApiClaimsViewModel>>(data);
+            return result;
 
         }
     }
