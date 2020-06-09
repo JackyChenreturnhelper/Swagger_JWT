@@ -10,11 +10,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Swagger_JWT.Common.Helper;
 using Swagger_JWT.Infrastructure.Dependency;
 using Swagger_JWT.Infrastructure.Filter;
@@ -60,14 +63,29 @@ namespace Swagger_JWT
             services.AddAuthorizationSetup(Configuration);
 
             services.AddSwaggerSetup();
+
+            services.AddCorsSetup();
+
+
+
+            services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
+                    .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
             services.AddControllers(options =>
             {
                 options.Filters.Add<ActionResultFilter>();
                
+            })  //全局配置Json序列化處理
+            .AddNewtonsoftJson(options =>
+            {
+                //忽略循環引用
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                //不使用駝峰樣式的key
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                //設置時間格式
+                //options.SerializerSettings.DateFormatString = "yyyy-MM-dd";
             });
 
-           
-         
+
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -82,6 +100,8 @@ namespace Swagger_JWT
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("LimitRequests");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
