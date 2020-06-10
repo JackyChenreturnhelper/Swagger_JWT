@@ -43,6 +43,7 @@ namespace Swagger_JWT.Common.Helper
                 //這個就是過期時間，目前是過期1000秒，可自定義，注意JWT有自己的緩沖過期時間
                 new Claim (JwtRegisteredClaimNames.Exp,$"{new DateTimeOffset(DateTime.Now.AddSeconds(1000)).ToUnixTimeSeconds()}"),
                 new Claim(ClaimTypes.Expiration, DateTime.Now.AddSeconds(1000).ToString()),
+                  new Claim(ClaimTypes.Name,tokenModel.Name),
                  new Claim(JwtRegisteredClaimNames.Sub, tokenModel.Name),// User.Identity.Name
                 new Claim(JwtRegisteredClaimNames.Iss,iss),
                  new Claim(JwtRegisteredClaimNames.Aud,aud),
