@@ -22,6 +22,7 @@ using Swagger_JWT.Common.Helper;
 using Swagger_JWT.Infrastructure.Dependency;
 using Swagger_JWT.Infrastructure.Filter;
 using Swagger_JWT.Infrastructure.Mapper;
+using Swagger_JWT.Infrastructure.Middlewares;
 using Swagger_JWT.Repository.DB;
 using Swagger_JWT.Service.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
@@ -57,6 +58,7 @@ namespace Swagger_JWT
               typeof(ControllerProfile).Assembly
           );
 
+            services.AddPrePareLoginUserSetup();
 
             services.AddCacheSetup();
 
@@ -70,7 +72,7 @@ namespace Swagger_JWT
 
             services.AddIpPolicyRateLimitSetup(Configuration);
 
-
+            
 
             services.Configure<KestrelServerOptions>(x => x.AllowSynchronousIO = true)
                     .Configure<IISServerOptions>(x => x.AllowSynchronousIO = true);
@@ -119,8 +121,8 @@ namespace Swagger_JWT
             app.UseAuthentication();
 
             app.UseAuthorization();
+            app.UseMiddleware<AuthenticationMiddleware>();
 
-          
 
             app.UseEndpoints(endpoints =>
             {

@@ -27,5 +27,7 @@ namespace Swagger_JWT.Repository.DB
 
         }
         public DbSet<ApiClaims> ApiClaims { get; set; }
+
+        public DbSet<AspNetUsers> AspNetUsers { get; set; }
     }
 }

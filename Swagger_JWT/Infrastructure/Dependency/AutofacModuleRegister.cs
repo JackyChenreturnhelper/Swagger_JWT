@@ -3,6 +3,7 @@ using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Swagger_JWT.Common.AOP;
 using Swagger_JWT.Common.Helper;
+using Swagger_JWT.Common.LoginUser;
 using Swagger_JWT.Repository.Implement;
 using Swagger_JWT.Repository.Interface;
 using Swagger_JWT.Service.Implement;
@@ -53,15 +54,15 @@ namespace Swagger_JWT.Infrastructure.Dependency
                    .AsImplementedInterfaces()
                    .InstancePerDependency();
 
-            builder.Register(c => new LoginService("jacky",c.Resolve<IApiClaimsRepository>(),c.Resolve<IMapper>()))
+            builder.Register(c => new LoginService("jacky",
+                c.Resolve<IApiClaimsRepository>(),
+                c.Resolve<IMapper>(),
+                c.Resolve<ILoginUser>()
+                ))
              .As<ILoginService>()
               .AsImplementedInterfaces()
               .EnableInterfaceInterceptors()
              .InterceptedBy(cacheType.ToArray());
-
-           
-
-
         }
     }
 }
